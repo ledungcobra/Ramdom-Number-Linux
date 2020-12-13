@@ -31,14 +31,16 @@ static int device_close(struct inode *inode, struct file *file){
 /* Function read the content int device: This function is called whenever device is being read from user space 
  data is being sent from the device to the user. In this case is uses the copy_to_user()
   function to send the buffer string to the user and captures any errors.*/
-static ssite_t device_read(struct file *file, char __user *buffer, size_t count, loff_t *position){
+static ssize_t device_read(struct file *file, char __user *buffer, size_t count, loff_t *position){
+
+     int error;
     printk(KERN_INFO "Driver: read!!");
 
     get_random_bytes(&valueRandom,4);
     printk(KERN_INFO "Random Number: %d",valueRandom);
-    int error =0;
-    if (*off > 0) return 0;
-    error = copy_to_user(buffer,&valueRandomm, sizeof(int));
+    if (*position > 0) return 0;
+
+    error = copy_to_user(buffer,&valueRandom, sizeof(int));
     if (error==0)
     {
         return 0;
@@ -85,7 +87,7 @@ static int __init _init(void){
     }
 
     //character device will have to be initialized
-    cdev_init(&_cdev, &randnum_fops);
+    cdev_init(&_cdev, &random_fOperations);
     if (cdev_add(&_cdev, first, 1) == -1)//the kernel will have to be notified
     {
         device_destroy(_class, first);
@@ -97,7 +99,7 @@ static int __init _init(void){
     return 0;
 }
 
-static void __exit _exit(void) /* Destructor */
+static void __exit exitModule(void) /* Destructor */
 {
      
     cdev_del(&_cdev); //function remove device
@@ -108,4 +110,7 @@ static void __exit _exit(void) /* Destructor */
 }
 
 module_init(_init);
-module_exit(_exit);
+MODULE_LICENSE("GPL");
+MODULE_AUTHOR("18120331 - 18120352 - 18120408");
+MODULE_DESCRIPTION("Generate a random number 4 bytes");
+module_exit(exitModule);
