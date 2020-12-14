@@ -1,7 +1,7 @@
-##Ramdom-Number-Linux
+## Ramdom-Number-Linux
 Tạo ngẫu nhiên số trong Kernel Linux
 
-#Nội dung đồ án:
+## Nội dung đồ án:
 Mục tiêu hiểu về Linux kernel module và hệ thống quản lý file và device trong linux, giao tiếp giữa tiến trình ở user space và code kernel space 
 + Viết một module dùng để tạo ra số ngẫu nhiên. 
 + Module này sẽ tạo một character device để cho phép các tiến trình ở userspace có thể open và read các số ngẫu nhiên.
